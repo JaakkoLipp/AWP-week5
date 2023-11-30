@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <title>Express</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script defer src="/javascripts/client.js"></script>
+
+    <!-- Compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo">Recipes</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="sass.html">Sass</a></li>
+          <li><a href="badges.html">Components</a></li>
+          <li><a href="collapsible.html">JavaScript</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h4>Search Recipe</h4>
+      <div class="col" id="view-recipe">
+        <form id="input-form">
+          <input type="text" id="recipe-input" placeholder="Recipe" />
+          <button class="btn" type="submit">Search</button>
+        </form>
+        <div id="recipe-div"></div>
+      </div>
+
+      <div class="col" id="add-recipe">
+        <form id="recipe-form">
+          <h4>New recipe:</h4>
+          <input type="text" id="name-text" placeholder="Recipe Name" />
+          <h4>Ingredients</h4>
+          <textarea id="ingredients-text"></textarea>
+          <button class="btn" id="add-ingredient" type="button">
+            Add ingredient
+          </button>
+          <h4>Instructions</h4>
+          <textarea id="instructions-text"></textarea>
+          <button class="btn" id="add-instruction" type="button">
+            Add instruction
+          </button>
+          <button class="btn" id="submit" type="submit">Submit</button>
+        </form>
+
+        <form id="image-upload-form">
+          <h4>Recipe image:</h4>
+          <input type="file" id="image-input" accept="image/*" multiple />
+          <button class="btn" type="submit" id="submit-images">Submit</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
