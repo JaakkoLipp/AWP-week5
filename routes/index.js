@@ -1,5 +1,7 @@
 var express = require("express");
 var router = express.Router();
+const mongoose = require("mongoose");
+const Recipe = require("../models/Recipe");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -17,15 +19,30 @@ router.get("/recipe/:food/", (req, res) => {
   });
 });
 
-// log new recipes
+router.post("/recipe/", (req, res, next) => {
+  // MongooseError: Model.findOne() no longer accepts a callback -> promise
+  Recipe.findOne({ name: req.body.name })
+    .then((recipe) => {
+      // If recipe already exists
+      if (recipe) {
+        return res.status(403).send("Recipe already exists!");
+      }
 
-let recipes = [];
+      // If the recipe doesn't exist
+      const newRecipe = new Recipe({
+        name: req.body.name,
+        ingredients: req.body.ingredients,
+        instructions: req.body.instructions,
+      });
 
-router.post("/recipe/", (req, res) => {
-  let recipe = req.body;
-  recipes.push(recipe);
-  console.log("Received recipe:", recipe);
-  res.json(recipe);
+      // Save the new recipe
+      return newRecipe.save().then(() => {
+        res.send(req.body);
+      });
+    })
+    .catch((err) => {
+      next(err);
+    });
 });
 
 // image route
