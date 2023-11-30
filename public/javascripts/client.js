@@ -2,23 +2,25 @@
 
 function loadinitrecipe() {
   const recipedefault = "Pizza";
-  fetch(`/recipe/${recipedefault}/`)
+  fetch(`/recipe/${recipedefault}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error("fetch failed");
       }
       return response.json();
     })
-    .then((recipedata) => {
+    .then((recipes) => {
+      //take first result into page
+      const recipe = recipes[0];
       const recipeElement = document.getElementById("recipe-div");
       recipeElement.innerHTML = `
-              <h2>${recipedata.name}</h2>
+              <h2>${recipe.name}</h2>
               <h4>Ingredients:</h4>
-              <ul>${recipedata.ingredients
+              <ul>${recipe.ingredients
                 .map((ingredient) => `<li>${ingredient}</li>`)
                 .join("")}</ul>
               <h4>Instructions:</h4>
-              <ol>${recipedata.instructions
+              <ol>${recipe.instructions
                 .map((step) => `<li>${step}</li>`)
                 .join("")}</ol>
           `;
@@ -29,35 +31,40 @@ loadinitrecipe();
 
 // UI code
 
-document.getElementById("input-form").addEventListener("submit", (event) => {
-  event.preventDefault();
-  const recipe = document.getElementById("recipe-input").value;
-  const recipeDiv = document.getElementById("recipe-div");
+document
+  .getElementById("nav-recipe-search")
+  .addEventListener("submit", (event) => {
+    event.preventDefault();
+    const recipe = document.getElementById("search").value;
 
-  // get recipe data
-  fetch(`/recipe/${recipe}`)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("fetch failed");
-      }
-      return response.json();
-    })
-    .then((recipedata) => {
-      const recipeElement = document.getElementById("recipe-div");
-      recipeElement.innerHTML = `
-              <h2>${recipedata.name}</h2>
+    // get recipe data
+    fetch(`/recipe/${recipe}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("fetch failed");
+        }
+        return response.json();
+      })
+      .then((recipes) => {
+        //take first result into page
+        const recipe = recipes[0];
+
+        console.log(recipe);
+        const recipeElement = document.getElementById("recipe-div");
+        recipeElement.innerHTML = `
+              <h2>${recipe.name}</h2>
               <h4>Ingredients:</h4>
-              <ul>${recipedata.ingredients
+              <ul>${recipe.ingredients
                 .map((ingredient) => `<li>${ingredient}</li>`)
                 .join("")}</ul>
               <h4>Instructions:</h4>
-              <ol>${recipedata.instructions
+              <ol>${recipe.instructions
                 .map((step) => `<li>${step}</li>`)
                 .join("")}</ol>
           `;
-    })
-    .catch((error) => console.error("Error:", error));
-});
+      })
+      .catch((error) => console.error("Error:", error));
+  });
 
 // new recipe arrays
 let ingredientsList = [];

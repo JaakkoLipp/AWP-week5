@@ -8,15 +8,33 @@ router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
 
-//////////////// API ////////////////
-
-router.get("/recipe/:food/", (req, res) => {
+/*
   const foodname = req.params.food;
   res.json({
     name: foodname,
     instructions: ["a", "b"],
     ingredients: ["a", "b"],
   });
+
+*/
+
+//////////////// API ////////////////
+
+router.get("/recipe/:food", (req, res, next) => {
+  const name = req.params.food;
+
+  Recipe.find({ name: new RegExp(name, "i") })
+    .then((recipe) => {
+      if (recipe.length > 0) {
+        console.log(recipe);
+        return res.send(recipe);
+      } else {
+        return res.status(404).send("No recipe found for: " + name);
+      }
+    })
+    .catch((err) => {
+      return next(err);
+    });
 });
 
 router.post("/recipe/", (req, res, next) => {
