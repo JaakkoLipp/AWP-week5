@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const mongoose = require("mongoose");
 const Recipe = require("../models/Recipe");
+const Category = require("../models/Category");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -37,6 +38,18 @@ router.get("/recipe/:food", (req, res, next) => {
     });
 });
 
+//populate special diets
+router.get("/categories", (req, res) => {
+  Category.find({})
+    .then((categories) => {
+      console.log(categories);
+      res.json(categories);
+    })
+    .catch((error) => {
+      res.status(500).send(error.message);
+    });
+});
+
 router.post("/recipe/", (req, res, next) => {
   // MongooseError: Model.findOne() no longer accepts a callback -> promise
   Recipe.findOne({ name: req.body.name })
@@ -51,6 +64,7 @@ router.post("/recipe/", (req, res, next) => {
         name: req.body.name,
         ingredients: req.body.ingredients,
         instructions: req.body.instructions,
+        categories: req.body.categories,
       });
 
       // Save the new recipe

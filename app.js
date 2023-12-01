@@ -9,7 +9,9 @@ mongoose.connect("mongodb://127.0.0.1:27017/testdb");
 mongoose.Promise = Promise;
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error"));
-// mongoDB
+
+// create category for special diets
+db.createCollection("category");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");

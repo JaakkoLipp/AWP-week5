@@ -29,7 +29,40 @@ function loadinitrecipe() {
 }
 loadinitrecipe();
 
-// UI code
+// Function to add checkboxes to the form
+fetch("/categories")
+  .then((response) => response.json())
+  .then((categories) => {
+    console.log(categories);
+    const container = document.getElementById("special-diets");
+
+    categories.forEach((category) => {
+      // Create the checkbox input
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.id = "category_" + category._id; // Prefixing ID to avoid conflicts
+      checkbox.classList.add("filled-in"); // Materialize class for checkboxes
+      checkbox.name = "categories";
+      checkbox.value = category._id;
+
+      // Create the visual span for Materialize
+      const span = document.createElement("span");
+      span.textContent = category.name;
+
+      // Create the label and append the checkbox and span to it
+      const label = document.createElement("label");
+      label.htmlFor = "category_" + category._id;
+      label.appendChild(checkbox);
+      label.appendChild(span);
+
+      // Append the label to the container
+      container.appendChild(label);
+      container.appendChild(document.createElement("br")); // Line break for spacing
+    });
+  })
+  .catch((error) => {
+    console.error("Error fetching categories:", error);
+  });
 
 document
   .getElementById("nav-recipe-search")
@@ -88,11 +121,21 @@ document.getElementById("add-instruction").addEventListener("click", () => {
 document.getElementById("recipe-form").addEventListener("submit", (event) => {
   event.preventDefault();
 
+  // Get all checked checkboxes from the special diets section
+  const checkedCategories = document.querySelectorAll(
+    '#special-diets input[type="checkbox"]:checked'
+  );
+  // Map over them to extract the values (the category ids)
+  const selectedCategoryIds = Array.from(checkedCategories).map(
+    (cb) => cb.value
+  );
+
   const recipeName = document.getElementById("name-text").value;
   const recipeData = {
     name: recipeName,
     ingredients: ingredientsList,
     instructions: instructionsList,
+    categories: selectedCategoryIds,
   };
 
   fetch("/recipe/", {

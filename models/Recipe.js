@@ -3,8 +3,9 @@ const Schema = mongoose.Schema;
 
 let recipeSchema = new Schema({
   name: String,
-  instructions: Array,
   ingredients: Array,
+  instructions: Array,
+  categories: Array,
 });
 
 module.exports = mongoose.model("Recipe", recipeSchema);
