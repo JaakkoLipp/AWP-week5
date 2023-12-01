@@ -8,4 +8,4 @@ let recipeSchema = new Schema({
   categories: Array,
 });
 
-module.exports = mongoose.model("Recipe", recipeSchema, "Recipes");
+module.exports = mongoose.model("Recipe", recipeSchema, "recipes");
