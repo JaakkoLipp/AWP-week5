@@ -21,6 +21,7 @@ router.get("/", function (req, res, next) {
 
 //////////////// API ////////////////
 
+// gets the recipe from database
 router.get("/recipe/:food", (req, res, next) => {
   const name = req.params.food;
 
